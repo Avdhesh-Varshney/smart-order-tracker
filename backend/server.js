@@ -3,11 +3,12 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import connectDB from './config/db.js';
+import router from './Routes/index.js';
 
 dotenv.config();
 
 const server = express();
-const PORT = process.env.PORT || 5000;
+const port = process.env.PORT || 5000;
 
 // Middleware
 server.use(express.json());
@@ -17,8 +18,9 @@ server.use(cors());
 connectDB();
 
 // Routes
-server.get('/', (req, res) => res.send('Server is Ready'));
+server.get('/', (req, res) => res.send('Server is ready'));
+server.use("/api", router);
 
-server.listen(PORT, () => {
-    console.log(`Server is running at http://localhost:${PORT}`);
+server.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
 });
