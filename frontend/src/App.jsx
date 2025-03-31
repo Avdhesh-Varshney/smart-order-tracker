@@ -12,10 +12,17 @@ function App() {
   return (
     <UserContext.Provider value={{ userAuth, setUserAuth }}>
       <div className="flex flex-col min-h-screen">
-        <Navbar />
+        {userAuth.access_token && <Navbar />}
 
         <div className="flex-1">
           <Routes>
+            {
+              userAuth.access_token ? (
+                <Route path="/" element={<h1>Home page</h1>} />
+              ) : (
+                <Route path="/" element={<UserAuthForm type="login" />} />
+              )
+            }
             <Route path="/register" element={<UserAuthForm type="register" />}></Route>
           </Routes>
         </div>
