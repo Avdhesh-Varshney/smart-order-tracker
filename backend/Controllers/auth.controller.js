@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 
 import User from '../Models/user.model.js';
-import { mobileRegex, passwordRegex } from '../utils/helper.js';
+import { generateToken, mobileRegex, passwordRegex } from '../utils/helper.js';
 
 export const register = async (req, res) => {
     let { fullname, role, mobile, password } = req.body;
@@ -44,6 +44,26 @@ export const register = async (req, res) => {
         return res.status(201).json(generateToken(savedUser));
     } catch (error) {
         if (error.code === 11000) return res.status(409).json({ error: "User with this number already exists" });
+        return res.status(500).json({ error: error.message });
+    }
+}
+
+export const login = async (req, res) => {
+    let { mobile, password } = req.body;
+
+    try {
+        const user = await User.findOne({ "personal_info.mobile": mobile });
+        if (!user) {
+            return res.status(400).json({ error: "Mobile number not found" });
+        }
+
+        const passwordMatch = await bcrypt.compare(password, user.personal_info.password);
+        if (!passwordMatch) {
+            return res.status(401).json({ error: "Incorrect password" });
+        }
+
+        return res.status(200).json(generateToken(user));
+    } catch (error) {
         return res.status(500).json({ error: error.message });
     }
 }
