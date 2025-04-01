@@ -60,7 +60,7 @@ The platform provides a structured and efficient order management workflow with 
 
 3. **Start the development servers:**
    ```bash
-   cd frotend && npm run dev
+   cd frontend && npm run dev
    cd backend && npm run dev
    ```
 
