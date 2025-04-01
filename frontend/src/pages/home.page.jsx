@@ -17,11 +17,24 @@ const Home = () => {
             }
         })
             .then(({ data }) => {
-                setOrders(data);
+                data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                if (role) {
+                    data = data.filter(order => order.order_status !== 3 && order.order_status !== 4);
+                }
+
+                const groupedOrders = data.reduce((acc, order) => {
+                    if (!acc[order.customer_id]) {
+                        acc[order.customer_id] = [];
+                    }
+                    acc[order.customer_id].push(order);
+                    return acc;
+                }, {});
+
+                setOrders(groupedOrders);
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(({ response }) => {
+                console.log(response.data.error);
+            })
     }
 
     useEffect(() => {
@@ -41,11 +54,19 @@ const Home = () => {
                     orders && Object.keys(orders).length > 0 ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 gap-y-8 w-full max-w-7xl justify-center place-items-center">
                             {
-                                orders.map((order, index) => (
-                                    <div key={index} className="bg-white shadow-md rounded-lg p-4 w-full max-w-sm">
-                                        <h2 className="text-xl font-semibold">{order.title}</h2>
-                                        <p className="text-gray-600">{order.des}</p>
-                                        <p className="text-gray-500">Status: {order.order_status}</p>
+                                Object.keys(orders).map((customerId, index) => (
+                                    <div key={index} className="bg-white shadow-lg rounded-lg p-4 w-full max-w-xs">
+                                        <h2 className="text-xl font-semibold mb-2">{"Customer Name"}</h2>
+                                        <ul>
+                                            {
+                                                orders[customerId].map(order => (
+                                                    <li key={order._id} className="border-b py-2">
+                                                        <p>{order.title}</p>
+                                                        <p>Status: {order.order_status}</p>
+                                                    </li>
+                                                ))
+                                            }
+                                        </ul>
                                     </div>
                                 ))
                             }
