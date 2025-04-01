@@ -65,3 +65,23 @@ export const getAllOrders = async (req, res) => {
         res.status(409).json({ error: error.message });
     }
 }
+
+export const getOrderById = async (req, res) => {
+    const { orderId } = req.params;
+
+    try {
+        Order.findOne({ order_id: orderId })
+            .then(order => {
+                if (!order) {
+                    return res.status(404).json({ error: "Order not found or unauthorized" });
+                }
+
+                return res.status(200).json(formattedData([order]));
+            })
+            .catch(err => {
+                return res.status(500).json({ error: "Failed to fetch order." });
+            });
+    } catch (error) {
+        res.status(409).json({ error: error.message });
+    }
+}

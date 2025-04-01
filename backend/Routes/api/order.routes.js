@@ -7,8 +7,9 @@ import {
 
 import {
     createOrder,
+    getOrders,
     getAllOrders,
-    getOrders
+    getOrderById
 } from '../../Controllers/order.controller.js';
 
 const orderRoutes = express.Router();
@@ -16,5 +17,6 @@ const orderRoutes = express.Router();
 orderRoutes.post('/create', authenticateUser, createOrder);
 orderRoutes.get('/get', authenticateUser, getOrders);
 orderRoutes.get('/all', authenticateAdmin, getAllOrders);
+orderRoutes.get('/get/:orderId', getOrderById);
 
 export default orderRoutes;
