@@ -9,6 +9,7 @@ import UserAuthForm from "./pages/userAuthForm.page";
 import NewOrder from "./pages/newOrder.page";
 import Home from "./pages/home.page";
 import OrderStatus from "./pages/orderStatus.page";
+import PageNotFound from "./pages/404.page";
 
 
 export const UserContext = createContext({});
@@ -40,6 +41,8 @@ function App() {
 
             <Route path="/new-order" element={<NewOrder />} />
             <Route path="/order/:orderId" element={<OrderStatus />} />
+
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </div>
 
