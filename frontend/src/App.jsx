@@ -6,6 +6,7 @@ import { lookInSession } from "./common/session";
 import Navbar from "./components/navbar.component";
 
 import UserAuthForm from "./pages/userAuthForm.page";
+import NewOrder from "./pages/newOrder.page";
 
 
 export const UserContext = createContext({});
@@ -33,7 +34,8 @@ function App() {
                 <Route path="/" element={<UserAuthForm type="login" />} />
               )
             }
-            <Route path="/register" element={<UserAuthForm type="register" />}></Route>
+            <Route path="/register" element={<UserAuthForm type="register" />} />
+            <Route path="/new-order" element={<NewOrder />} />
           </Routes>
         </div>
       </div>
