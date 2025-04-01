@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import AnimationWrapper from "../common/page-animation";
 
 import NoDataMessage from "../components/noDataMessage.component";
+import OrderStatusTimeline from "../components/orderStatusTimeline.component";
 
 const OrderStatus = () => {
 
@@ -42,6 +43,10 @@ const OrderStatus = () => {
                         <p className="text-3xl mb-20 text-gray-700">
                             {orderDetails.des}
                         </p>
+
+                        <div className="flex flex-col gap-6 md:gap-10 items-center justify-center w-full px-4 md:px-8 lg:px-16">
+                            <OrderStatusTimeline currentStatus={orderDetails.order_status} />
+                        </div>
                     </div>
                 ) : (
                     <NoDataMessage message={"No order details to display!"} />
