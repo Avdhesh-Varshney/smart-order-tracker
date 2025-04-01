@@ -51,3 +51,17 @@ export const getOrders = async (req, res) => {
         res.status(409).json({ error: error.message });
     }
 }
+
+export const getAllOrders = async (req, res) => {
+    try {
+        Order.find()
+            .then(orders => {
+                return res.status(200).json(formattedData(orders));
+            })
+            .catch(err => {
+                return res.status(500).json({ error: "Failed to fetch orders." });
+            });
+    } catch (error) {
+        res.status(409).json({ error: error.message });
+    }
+}
