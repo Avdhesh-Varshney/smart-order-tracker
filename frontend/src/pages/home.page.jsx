@@ -3,6 +3,17 @@ import AnimationWrapper from "../common/page-animation";
 import { UserContext } from "../App";
 import NoDataMessage from "../components/noDataMessage.component";
 import axios from "axios";
+import OrderCard from "../components/orderCard.component";
+
+export const statusName = ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"];
+
+export const statusEmojis = {
+    0: "⏳",
+    1: "📦",
+    2: "🚚",
+    3: "✅",
+    4: "❌"
+}
 
 const Home = () => {
 
@@ -77,21 +88,16 @@ const Home = () => {
                     orders && Object.keys(orders).length > 0 ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 gap-y-8 w-full max-w-7xl justify-center place-items-center">
                             {
-                                Object.keys(orders).map((customerId, index) => (
-                                    <div key={index} className="bg-white shadow-lg rounded-lg p-4 w-full max-w-xs">
-                                        <h2 className="text-xl font-semibold mb-2">{"Customer Name"}</h2>
-                                        <ul>
-                                            {
-                                                orders[customerId].map(order => (
-                                                    <li key={order._id} className="border-b py-2">
-                                                        <p>{order.title}</p>
-                                                        <p>Status: {order.order_status}</p>
-                                                    </li>
-                                                ))
-                                            }
-                                        </ul>
-                                    </div>
-                                ))
+                                Object.keys(orders).map(customer_id =>
+                                    orders[customer_id].map((order, i) => (
+                                        <OrderCard
+                                            key={`${order.order_id}-${i}`}
+                                            order={order}
+                                            orderNum={orders[customer_id].length - i}
+                                            customer={role ? customers[customer_id] : null}
+                                        />
+                                    ))
+                                )
                             }
                         </div>
                     ) : (
