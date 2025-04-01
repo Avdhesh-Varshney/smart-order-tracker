@@ -8,6 +8,7 @@ import Navbar from "./components/navbar.component";
 import UserAuthForm from "./pages/userAuthForm.page";
 import NewOrder from "./pages/newOrder.page";
 import Home from "./pages/home.page";
+import OrderStatus from "./pages/orderStatus.page";
 
 
 export const UserContext = createContext({});
@@ -36,9 +37,12 @@ function App() {
               )
             }
             <Route path="/register" element={<UserAuthForm type="register" />} />
+
             <Route path="/new-order" element={<NewOrder />} />
+            <Route path="/order/:orderId" element={<OrderStatus />} />
           </Routes>
         </div>
+
       </div>
     </UserContext.Provider>
   )
