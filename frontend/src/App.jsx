@@ -1,13 +1,23 @@
-import { createContext, useState } from "react";
-import Navbar from "./components/navbar.component";
+import { createContext, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
+
+import { lookInSession } from "./common/session";
+
+import Navbar from "./components/navbar.component";
+
 import UserAuthForm from "./pages/userAuthForm.page";
+
 
 export const UserContext = createContext({});
 
 function App() {
 
   const [userAuth, setUserAuth] = useState({});
+
+  useEffect(() => {
+    let userInSession = lookInSession("user");
+    userInSession ? setUserAuth(JSON.parse(userInSession)) : setUserAuth({ access_token: null });
+  }, []);
 
   return (
     <UserContext.Provider value={{ userAuth, setUserAuth }}>
