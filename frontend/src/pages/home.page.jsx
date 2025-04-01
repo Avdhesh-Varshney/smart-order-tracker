@@ -9,9 +9,10 @@ const Home = () => {
     let { userAuth: { access_token, role } } = useContext(UserContext);
 
     let [orders, setOrders] = useState(null);
+    let [customers, setCustomers] = useState({});
 
-    const fetchOrders = () => {
-        axios.get(import.meta.env.VITE_SERVER_DOMAIN + "/api/order/get", {
+    const fetchOrders = (serverRoute) => {
+        axios.get(import.meta.env.VITE_SERVER_DOMAIN + serverRoute, {
             headers: {
                 Authorization: `Bearer ${access_token}`
             }
@@ -31,6 +32,27 @@ const Home = () => {
                 }, {});
 
                 setOrders(groupedOrders);
+
+                if (role) {
+                    Object.keys(groupedOrders).forEach(customer_id => fetchCustomer(customer_id));
+                }
+            })
+            .catch(({ response }) => {
+                console.log(response.data.error);
+            })
+    }
+
+    const fetchCustomer = (customer_id) => {
+        axios.get(import.meta.env.VITE_SERVER_DOMAIN + "/api/auth/customer", {
+            params: {
+                customer_id
+            },
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }
+        })
+            .then(({ data }) => {
+                setCustomers(prev => ({ ...prev, [customer_id]: data }));
             })
             .catch(({ response }) => {
                 console.log(response.data.error);
@@ -39,7 +61,8 @@ const Home = () => {
 
     useEffect(() => {
         if (access_token) {
-            fetchOrders();
+            const serverRoute = role ? "/api/order/all" : "/api/order/get";
+            fetchOrders(serverRoute);
         }
     }, [access_token]);
 
