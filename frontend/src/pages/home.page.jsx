@@ -1,11 +1,21 @@
 import { useContext, useEffect, useState } from "react";
-import AnimationWrapper from "../common/page-animation";
-import { UserContext } from "../App";
-import NoDataMessage from "../components/noDataMessage.component";
 import axios from "axios";
+
+import AnimationWrapper from "../common/page-animation";
+
+import NoDataMessage from "../components/noDataMessage.component";
 import OrderCard from "../components/orderCard.component";
 
-export const statusName = ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"];
+import { UserContext } from "../App";
+
+
+export const statusName = [
+    "Pending",
+    "Processing",
+    "Shipped",
+    "Delivered",
+    "Cancelled"
+]
 
 export const statusEmojis = {
     0: "⏳",
