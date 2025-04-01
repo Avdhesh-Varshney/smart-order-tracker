@@ -10,7 +10,8 @@ import {
     getOrders,
     getAllOrders,
     getOrderById,
-    updateOrder
+    updateOrder,
+    deleteOrder
 } from '../../Controllers/order.controller.js';
 
 const orderRoutes = express.Router();
@@ -20,5 +21,6 @@ orderRoutes.get('/get', authenticateUser, getOrders);
 orderRoutes.get('/all', authenticateAdmin, getAllOrders);
 orderRoutes.get('/get/:orderId', getOrderById);
 orderRoutes.put('/update/:orderId', authenticateUser, updateOrder);
+orderRoutes.delete('/delete/:orderId', authenticateUser, deleteOrder);
 
 export default orderRoutes;

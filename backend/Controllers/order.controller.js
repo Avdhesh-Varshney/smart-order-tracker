@@ -120,3 +120,22 @@ export const updateOrder = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 }
+
+export const deleteOrder = async (req, res) => {
+    let customerId = req.user;
+    const { orderId } = req.params;
+
+    try {
+        const deletedOrder = await Order.findOneAndDelete({ order_id: orderId, customer: customerId });
+
+        if (!deletedOrder) {
+            return res.status(404).json({ error: "Order not found or unauthorized" });
+        }
+
+        await User.findOneAndUpdate({ _id: customerId }, { $pull: { orders: deletedOrder._id } });
+
+        res.status(200).json({ message: "Order deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to delete order." });
+    }
+}
