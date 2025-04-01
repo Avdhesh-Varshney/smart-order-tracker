@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import { lookInSession } from "./common/session";
 
 import Navbar from "./components/navbar.component";
+import Footer from "./components/footer.component";
 
 import UserAuthForm from "./pages/userAuthForm.page";
 import NewOrder from "./pages/newOrder.page";
@@ -46,6 +47,7 @@ function App() {
           </Routes>
         </div>
 
+        {userAuth.access_token && <Footer />}
       </div>
     </UserContext.Provider>
   )
