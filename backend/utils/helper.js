@@ -14,3 +14,17 @@ export const generateToken = (user) => {
         role: user.role,
     }
 }
+
+export const formattedData = (orders) => {
+    return orders.map(order => {
+        return {
+            id: order.order_id,
+            title: order.title,
+            des: order.des,
+            order_status: order.order_status,
+            created_at: order.publishedAt,
+            updated_at: order.updatedAt,
+            customer_id: order.customer
+        }
+    })
+}

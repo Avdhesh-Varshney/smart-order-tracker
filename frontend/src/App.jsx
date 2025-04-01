@@ -7,6 +7,7 @@ import Navbar from "./components/navbar.component";
 
 import UserAuthForm from "./pages/userAuthForm.page";
 import NewOrder from "./pages/newOrder.page";
+import Home from "./pages/home.page";
 
 
 export const UserContext = createContext({});
@@ -29,7 +30,7 @@ function App() {
           <Routes>
             {
               userAuth.access_token ? (
-                <Route path="/" element={<h1>Home page</h1>} />
+                <Route path="/" element={<Home />} />
               ) : (
                 <Route path="/" element={<UserAuthForm type="login" />} />
               )

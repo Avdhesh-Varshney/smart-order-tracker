@@ -67,3 +67,27 @@ export const login = async (req, res) => {
         return res.status(500).json({ error: error.message });
     }
 }
+
+export const getCustomer = async (req, res) => {
+    const { customer_id } = req.query;
+
+    if (!customer_id) {
+        return res.status(400).json({ error: "Customer ID is required" });
+    }
+
+    try {
+        const user = await User.findById(customer_id, { "personal_info.password": 0 });
+
+        if (!user) {
+            return res.status(404).json({ error: "Customer not found" });
+        }
+
+        return res.status(200).json({
+            fullname: user.personal_info.fullname,
+            mobile: user.personal_info.mobile,
+            profile_img: user.personal_info.profile_img
+        });
+    } catch (error) {
+        return res.status(500).json({ error: "Internal server error" });
+    }
+}
