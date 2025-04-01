@@ -16,8 +16,8 @@ The platform provides a structured and efficient order management workflow with 
 - **404 Error Page:** Custom-designed error page for improved user experience.
 
 ### 🛠️ Tech Stack
-- **Frontend:** React.js, Vite, Tailwind CSS
-- **Backend:** Node.js, Express.js, MongoDB
+- **Frontend:** React.js, Vite, Tailwind CSS, Axios, React Router DOM, Framer Motion, React Hot Toast, React Icons & Flat Icons 
+- **Backend:** Node.js, Express.js, MongoDB, Nanoid, Bcrypt 
 - **State Management:** Redux Toolkit
 - **Authentication:** JWT-based authentication system
 
