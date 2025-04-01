@@ -1,17 +1,68 @@
+import axios from "axios";
 import { useContext } from "react"
-import { UserContext } from "../App"
-import { Navigate } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
+import { Navigate, useNavigate } from "react-router-dom";
+
 import InputBox from "../components/inputBox.component";
+
+import { UserContext } from "../App"
 
 const NewOrder = () => {
 
     let { userAuth: { access_token } } = useContext(UserContext);
 
+    let navigate = useNavigate();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (e.target.className.includes("disable")) {
+            return;
+        }
+
+        let form = new FormData(newOrderFormElement);
+        let formData = {};
+
+        for (let [key, value] of form.entries()) {
+            formData[key] = value;
+        }
+
+        let { title, description } = formData;
+
+        if (!title.length) {
+            return toast.error("Order title is required");
+        }
+
+        let loadingToast = toast.loading("Creating order...");
+        e.target.classList.add("disable");
+
+        let newOrder = { title, des: description, order_status: 0 };
+
+        axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/api/order/create", newOrder, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`
+            }
+        })
+            .then(() => {
+                e.target.classList.remove("disable");
+                toast.dismiss(loadingToast);
+                toast.success("New order created successfully!");
+
+                setTimeout(() => {
+                    navigate("/");
+                }, 1000);
+            })
+            .catch(({ response }) => {
+                e.target.classList.remove("disable");
+                toast.dismiss(loadingToast);
+                return toast.error(response.data.error);
+            })
+    }
+
     return (
         access_token ?
             <div className="flex justify-center items-center">
-                <form id="newOrderFormElement" className="w-full max-w-md mx-auto bg-gray-50 p-6 mt-10 rounded shadow-md">
+                <form id="newOrderFormElement" className="w-full max-w-md mx-auto bg-gray-50 p-6 mt-10 rounded shadow-md" onSubmit={handleSubmit}>
                     <Toaster />
 
                     <h2 className="font-medium text-4xl my-10 text-center font-gelasio">
