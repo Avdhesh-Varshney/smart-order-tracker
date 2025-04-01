@@ -85,3 +85,38 @@ export const getOrderById = async (req, res) => {
         res.status(409).json({ error: error.message });
     }
 }
+
+export const updateOrder = async (req, res) => {
+    const { orderId } = req.params;
+    const { title, des, order_status } = req.body;
+
+    if (order_status < 0 || order_status > 4) {
+        return res.status(403).json({ error: "You must provide a valid order status" });
+    }
+
+    try {
+        let updateFields = {};
+
+        if (title !== undefined) updateFields.title = title;
+        if (des !== undefined) updateFields.des = des;
+        if (order_status !== undefined) updateFields.order_status = order_status;
+
+        if (Object.keys(updateFields).length === 0) {
+            return res.status(403).json({ error: "You must provide a valid field to update" });
+        }
+
+        const updatedOrder = await Order.findOneAndUpdate(
+            { order_id: orderId },
+            updateFields,
+            { new: true }
+        );
+
+        if (!updatedOrder) {
+            return res.status(404).json({ error: "Order not found or unauthorized" });
+        }
+
+        res.status(200).json(formattedData([updatedOrder]));
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
